@@ -27,16 +27,35 @@ var Game = function(player1, player2) {
     `player ${this.turn.name}s turn, enter the number of the square you wish to (you are ${this.turn.marker})`
   ];
 
-  console.log(this.board)
-
   this.playTurn = function() {
-    rl.question('Please select a number that is still available; ', (answer) => {
+    console.log(this.board);
+
+    rl.question('Please select a number that is still available: ', (answer) => {
+
       answer = parseInt(answer)
       if ( answer < 1 || answer > 9 ) {
         this.playTurn();
+      } else {
+
+        if ( answer <= 3 ) {
+          row = this.board[0];
+        } else if ( answer <= 6 ) {
+          row = this.board[1];
+        } else if ( answer <= 9 ) {
+          row = this.board[2];
+        }
+
+        row[answer - 1] = this.turn.marker
+
+        if ( this.turn.marker === 'O' ) {
+          this.turn = this.players[0]
+        } else {
+          this.turn = this.players[1]
+        }
+
+        this.playTurn()
       }
 
-      rl.close();
     });
   }
 }
